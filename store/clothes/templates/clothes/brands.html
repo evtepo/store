@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <h1><a href="{% url 'home' %}">Main page</a></h1>
+    <div style="text-align: center;">
+        {% for b in brands %}
+            <img src="{{ b.image.url }}" alt="" width="100" height="100">
+            <h1><a href="{{ b.get_absolute_url }}">{{ b.name }}</a></h1>
+            <p>{{ b.desc|linebreaks|truncatewords:50 }}</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

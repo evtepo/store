@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ brand.name }}</title>
+</head>
+<body>
+    <div class="nav">
+        <a href="{% url 'home' %}"><h1>Main page</h1></a>
+        <a href="{% url 'brands' %}"><h1>Brands</h1></a>
+        <a href="{% url 'brands' %}"><h1>Go back</h1></a>
+    </div>
+    <div style="text-align: center;">
+        {% for b in brand %}
+            <img src="{{ b.image.url }}" alt="" width="100" height="100">
+            <h1>{{ b.name }}</h1>
+            <p>{{ b.desc }}</p>
+        {% endfor %}
+        {% for t in type %}
+            <h2>{{ t.name }}</h2>
+            <p>{{ t.brands.desc }}</p>
+            <img src="{{ t.image.url }}" alt="" width="300" height="400" style="display: block;
+            margin-left: auto;
+            margin-right: auto;">
+        {% endfor %}
+    </div>
+</body>
+</html>
