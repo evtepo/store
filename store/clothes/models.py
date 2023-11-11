@@ -8,20 +8,20 @@ class Mixin(models.Model):
     """
     name = models.CharField(
         max_length=100,
-        verbose_name="Name"
+        verbose_name="Name",
     )
     desc = models.TextField(
-        verbose_name="Description"
+        verbose_name="Description",
     )
     slug = models.SlugField(
         max_length=255,
         unique=True,
         db_index=True,
-        verbose_name="URL"
+        verbose_name="URL",
     )
     image = models.ImageField(
         upload_to="img/%Y/%m/%d/",
-        verbose_name="Image"
+        verbose_name="Image",
     )
 
     def __str__(self) -> str:
@@ -36,7 +36,7 @@ class Brand(Mixin):
     Class for a clothing brand
     """
     def get_absolute_url(self):
-        return reverse("type", kwargs={"brand_slug": self.slug})
+        return reverse("brandItems", kwargs={"brand_slug": self.slug,})
     
     class Meta:
         verbose_name = "Brand"
@@ -47,10 +47,8 @@ class TypeOfClothing(Mixin):
     """
     Class for clothing type
     """
-    brands = models.ManyToManyField("Brand")
-
     def get_absolute_url(self):
-        return reverse("type", kwargs={"type_slug": self.slug})
+        return reverse("type", kwargs={"type_slug": self.slug,})
     
     class Meta:
         verbose_name = "Type of clothes"
@@ -61,32 +59,34 @@ class Clothes(Mixin):
     """
     Class for clothes
     """
-    types = models.ForeignKey(
+    brand = models.ForeignKey(
+        "Brand",
+        on_delete=models.PROTECT,
+    )
+    type = models.ForeignKey(
         "TypeOfClothing",
-        on_delete=models.PROTECT
-    )
-    gender = models.CharField(
-        max_length=6
-    )
-    season = models.CharField(
-        max_length=6,
-        verbose_name="Season"
+        on_delete=models.PROTECT,
     )
     fabric = models.CharField(
         max_length=100,
-        verbose_name="Fabric type"
+        verbose_name="Fabric type",
     )
     color = models.CharField(
         max_length=100,
-        verbose_name="Color"
+        verbose_name="Color",
     )
     publication_date = models.DateTimeField(
         auto_now=True,
-        verbose_name="Publication date"
+        verbose_name="Publication date",
+    )
+    price = models.DecimalField(
+        max_digits=7,
+        decimal_places=2,
+        verbose_name="Price",
     )
 
     def get_absolute_url(self):
-        return reverse("clothes", kwargs={"clothes_slug": self.slug})
+        return reverse("specificClothing", kwargs={"clothes_slug": self.slug,})
 
     class Meta:
         verbose_name = "Clothes"
