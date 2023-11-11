@@ -23,23 +23,21 @@ class ClothesAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "desc",
-        "types",
-        "gender",
-        "season",
+        "brand",
+        "type",
         "fabric",
         "color",
         "publication_date",
     )
     search_fields = (
         "name",
-        "gender",
-        "season",
+        "brand",
+        "type",
         "color",
     )
     list_filter = (
-        "season",
-        "gender",
-        "types",
+        "brand",
+        "type",
         "publication_date",
     )
     prepopulated_fields = {"slug" : ("name",),}
