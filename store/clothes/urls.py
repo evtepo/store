@@ -1,10 +1,12 @@
 from django.urls import path
 
-from .views import MainPage, AllBrands, SingleBrand
+from .views import MainPage, AllClothes, specificClothing, Brands, ItemsByBrand
 
 
 urlpatterns = [
     path("", MainPage.as_view(), name="home"),
-    path("brands/", AllBrands.as_view(), name="brands"),
-    path("brands/type/<slug:brand_slug>/", SingleBrand.as_view(), name="type"),
+    path("clothes/", AllClothes.as_view(), name="clothes"),
+    path("clothes/<slug:clothes_slug>", specificClothing.as_view(), name="specificClothing"),
+    path("brands", Brands.as_view(), name="brands"),
+    path("brands/<slug:brand_slug>", ItemsByBrand.as_view(), name="brandItems")
 ]
