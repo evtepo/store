@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ clothes.name }}</title>
+</head>
+<body>
+    
+    <style>
+        div.nav {
+            display: inline-block;
+            margin-left: 20px;
+        }
+        div.nav a {
+            display: block;
+            text-decoration: none;
+        }
+        div.item {
+            text-align: center;
+            margin: 50px;
+            border: solid 0.5px;
+        }
+    </style>
+
+    <div class="nav">
+        <a href="{% url 'home' %}"><h1>Main page</h1></a>
+    </div>
+    <div class="nav">
+        <a href="{% url 'brands' %}"><h1>Brands</h1></a>
+    </div>
+    <div class="nav">
+        <a href="{% url 'clothes' %}"><h1>Clothes</h1></a>
+    </div>
+
+    <div class="item">
+        <h1>{{ clothes.name }}</h1>
+        <img src="{{ clothes.image.url }}" alt="" height="300" width="250">
+        <p><b>Description</b>: {{ clothes.desc }}</p>
+        <p><b>Type of clothing</b>: {{ clothes.type }}</p>
+        <p><b>Brand</b>: {{ clothes.brand }}</p>
+        <p><b>Material type</b>:{{ clothes.fabric }}</p>
+        <p><b>Color</b>: {{ clothes.color }}</p>
+        <p><b>Price</b>: {{ clothes.price }}</p>
+    </div>
+
+</body>
+</html>

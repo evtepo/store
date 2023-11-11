@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+</head>
+<body>
+   
+    <style>
+        div.nav {
+            display: inline-block;
+            margin-left: 20px;
+        }
+        div.nav a {
+            display: block;
+            text-decoration: none;
+        }
+        div.clothes {
+            text-align: center;
+            margin: 50px;
+            border: solid 0.5px;
+        }
+    </style>
+
+    <div class="nav">
+        <a href="{% url 'home' %}"><h1>Main page</h1></a>
+    </div>
+    <div class="nav">
+        <a href="{% url 'brands' %}"><h1>Brands</h1></a>
+    </div>
+    <div class="nav">
+        <a href="{% url 'clothes' %}"><h1>Clothes</h1></a>
+    </div>
+
+    {% for c in clothes %}
+    <div class="clothes">
+        <h1><a href="{{ c.get_absolute_url }}" style="text-decoration: none;">{{ c.name }}</a></h1>
+        <img src="{{ c.image.url }}" alt="" height="300" width="250">
+        <p><b>Price</b>: {{ c.price }}</p>
+    </div>
+    {% endfor %}
+
+</body>
+</html>
