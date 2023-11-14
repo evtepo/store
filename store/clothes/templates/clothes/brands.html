@@ -1,38 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
-</head>
-<body>
+{% extends "clothes/base.html" %}
 
-    <style>
-        div.nav {
-            display: inline-block;
-            margin-left: 20px;
-        }
-        div.nav a {
-            display: block;
-            text-decoration: none;
-        }
-        div.brand {
-            text-align: center;
-            margin: 50px;
-            border: solid 0.5px;
-        }
-    </style>
-
-    <div class="nav">
-        <a href="{% url 'home' %}"><h1>Main page</h1></a>
-    </div>
-    <div class="nav">
-        <a href="{% url 'brands' %}"><h1>Brands</h1></a>
-    </div>
-    <div class="nav">
-        <a href="{% url 'clothes' %}"><h1>Clothes</h1></a>
-    </div>
-    
+{% block content %}
         {% for b in brands %}
             <div class="brand">
                 <img src="{{ b.image.url }}" alt="" height="200" width="200">
@@ -40,6 +8,4 @@
                 <p>{{ b.desc }}</p>
             </div>
         {% endfor %}
-
-</body>
-</html>
+{% endblock %}

@@ -1,45 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
-</head>
-<body>
-    
-    <style>
-        div.nav {
-            display: inline-block;
-            margin-left: 20px;
-        }
-        div.nav a {
-            display: block;
-            text-decoration: none;
-        }
-        div.title {
-            text-align: center;
-            margin-top: 40px;
-        }
-        div.title h1 {
-            border: solid 0.5px;
-            border-radius: 20px;
-            margin-left: 820px;
-            margin-right: 820px;
-        }
-    </style>
+{% extends "clothes/base.html" %}
 
-    <div class="nav">
-        <a href="{% url 'home' %}"><h1>Main page</h1></a>
-    </div>
-    <div class="nav">
-        <a href="{% url 'brands' %}"><h1>Brands</h1></a>
-    </div>
-    <div class="nav">
-        <a href="{% url 'clothes' %}"><h1>Clothes</h1></a>
-    </div>
+{% block content %}
     <div class="title">
         <h1>Clothing Store</h1>
     </div>
-
-</body>
-</html>
+{% endblock %}
