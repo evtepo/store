@@ -1,8 +1,12 @@
-from typing import Any
-from django.db.models.query import QuerySet
-from django.views.generic import ListView, TemplateView, DetailView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, TemplateView, DetailView, CreateView
+from django.contrib.auth.views import LoginView
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import logout, login
+from django.shortcuts import redirect
 
 from .models import Brand, TypeOfClothing, Clothes
+from .forms import RegistrationForm
 
 
 class MainPage(TemplateView):
@@ -15,12 +19,50 @@ class MainPage(TemplateView):
         return context
     
 
+class Registration(CreateView):
+    form_class = RegistrationForm
+    template_name = "clothes/registration.html"
+    success_url = reverse_lazy("authentication")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Registration"
+        
+        return context
+    
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+
+        return redirect("home")
+    
+
+class Authentication(LoginView):
+    form_class = AuthenticationForm
+    template_name = "clothes/authentication.html"
+
+    def get_context_data(self, **kwargs):
+        context =  super().get_context_data(**kwargs)
+        context["title"] = "Authentication"
+
+        return context
+    
+    def get_success_url(self):
+        return reverse_lazy("home")
+    
+
+def user_logout(request):
+    logout(request)
+    
+    return redirect("authentication")
+    
+
 class AllClothes(ListView):
     model = Clothes
     template_name = "clothes/clothes.html"
     context_object_name = "clothes"
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Clothes"
         
@@ -37,7 +79,10 @@ class specificClothing(DetailView):
     context_object_name = "clothes"
 
     def get_context_data(self, **kwargs):
-        return super().get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Clothes"
+
+        return context
     
     def get_queryset(self):
         return Clothes.objects.filter(slug=self.kwargs[self.slug_url_kwarg]).select_related("type").select_related("brand")
@@ -62,6 +107,7 @@ class ItemsByBrand(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context["title"] = "Clothes"
 
         return context
     

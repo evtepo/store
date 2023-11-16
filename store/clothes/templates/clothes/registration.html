@@ -1,0 +1,9 @@
+{% extends "clothes/base.html" %}
+
+{% block content %}
+    <form action="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Registrate</button>
+    </form>
+{% endblock %}

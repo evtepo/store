@@ -5,7 +5,7 @@
     <div class="clothes">
         <h1><a href="{{ c.get_absolute_url }}" style="text-decoration: none;">{{ c.name }}</a></h1>
         <img src="{{ c.image.url }}" alt="" height="300" width="250">
-        <p><b>Price</b>: {{ c.price }}</p>
+        <p><b>Price</b>: {{ c.price }} $</p>
     </div>
     {% endfor %}
 {% endblock %}

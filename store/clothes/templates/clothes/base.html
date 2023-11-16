@@ -1,33 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ title }}</title>
 </head>
-<body>   
+
+<body>
     <style>
-        div.nav {
-            display: inline-block;
-            margin-left: 20px;
+        html, body {
+            font-family: 'Arial';
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            color: #444;
         }
 
-        div.nav a {
-            display: block;
+        /* Header */
+        ul.nav {
+            overflow: hidden;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        ul.nav li.left {
+            float: left;
+        }
+
+        ul.nav li.left a {
+            display: inline-block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            position: relative;
+            left: 100px;
+        }
+
+        ul.nav li a:hover {
+            background-color: #111;
+        }
+
+        ul.nav li.last {
+            float: right;
+            color: white;
+            position: relative;
+            right: 100px;
+        }
+
+        ul.nav li.last a {
+            display: inline-block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
             text-decoration: none;
         }
 
+        /* Title */
         div.title {
             text-align: center;
             margin-top: 40px;
         }
-        div.title h1 {
+
+        div.title h2 {
             border: solid 0.5px;
             border-radius: 20px;
             margin-left: 820px;
             margin-right: 820px;
         }
 
+        /* Content */
         div.item {
             text-align: center;
             margin: 50px;
@@ -47,17 +94,19 @@
         }
     </style>
 
-    <div class="nav">
-        <a href="{% url 'home' %}"><h1>Main page</h1></a>
-    </div>
-    <div class="nav">
-        <a href="{% url 'brands' %}"><h1>Brands</h1></a>
-    </div>
-    <div class="nav">
-        <a href="{% url 'clothes' %}"><h1>Clothes</h1></a>
-    </div>
+    <ul class="nav">
+        <li class="left"><a href="{% url 'home' %}"><h2>Main page</h2></a></li>
+        <li class="left"><a href="{% url 'brands' %}"><h2>Brands</h2></a></li>
+        <li class="left"><a href="{% url 'clothes' %}"><h2>Clothes</h2></a></li>
+        {% if request.user.is_authenticated %}
+            <li class="last"><h2>{{ user.username }} | <a href="{% url 'logout' %}">Log out</a></h2></li>
+        {% else %}
+            <li class="last"><h2><a href="{% url 'authentication' %}">Sign in</a> | <a href="{% url 'registration' %}">Sign up</a></h2></li>
+        {% endif %}
+    </ul>
 
     {% block content %}
     {% endblock %}
 </body>
+
 </html>
