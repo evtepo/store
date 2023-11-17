@@ -10,6 +10,9 @@ from .forms import RegistrationForm
 
 
 class MainPage(TemplateView):
+    """
+    Class to display main page
+    """
     template_name = "clothes/index.html"
 
     def get_context_data(self, **kwargs):
@@ -20,6 +23,9 @@ class MainPage(TemplateView):
     
 
 class Registration(CreateView):
+    """
+    User registration
+    """
     form_class = RegistrationForm
     template_name = "clothes/registration.html"
     success_url = reverse_lazy("authentication")
@@ -38,6 +44,9 @@ class Registration(CreateView):
     
 
 class Authentication(LoginView):
+    """
+    User Authentication
+    """
     form_class = AuthenticationForm
     template_name = "clothes/authentication.html"
 
@@ -58,6 +67,9 @@ def user_logout(request):
     
 
 class AllClothes(ListView):
+    """
+    Class to display all clothes
+    """
     model = Clothes
     template_name = "clothes/clothes.html"
     context_object_name = "clothes"
@@ -73,6 +85,9 @@ class AllClothes(ListView):
 
 
 class specificClothing(DetailView):
+    """
+    Class for displaying one thing
+    """
     model = Clothes
     template_name = "clothes/specificClothing.html"
     slug_url_kwarg = "clothes_slug"
@@ -89,6 +104,9 @@ class specificClothing(DetailView):
 
 
 class Brands(ListView):
+    """
+    Class to display all brands
+    """
     model = Brand
     template_name = "clothes/brands.html"
     context_object_name = "brands"
@@ -101,6 +119,9 @@ class Brands(ListView):
     
 
 class ItemsByBrand(ListView):
+    """
+    Class for displaying clothes by brand
+    """
     model = Clothes
     template_name = "clothes/brandItems.html"
     context_object_name = "clothes"
