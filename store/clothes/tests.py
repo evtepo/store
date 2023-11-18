@@ -6,56 +6,56 @@ from .models import Brand, TypeOfClothing, Clothes
 class BrandTestCase(TestCase):
     def setUp(self) -> None:
         Brand.objects.create(
-            name="Puma",
-            desc="Description of puma",
-            slug="puma",
+            name="Brand1",
+            desc="Description of Brand1",
+            slug="brand1",
             image="None"
         )
         Brand.objects.create(
-            name="TNF",
-            desc="Description of tnf",
-            slug="tnf",
+            name="Brand2",
+            desc="Description of Brand2",
+            slug="brand2",
             image="None"
         )
         Brand.objects.create(
-            name="Zara",
-            desc="Description of zara",
-            slug="adidas",
+            name="Brand3",
+            desc="Description of brand3",
+            slug="not-brand3",
             image="None"
         )
 
     def test_brands_name_eq_slug(self):
-        puma = Brand.objects.get(name="Puma")
-        tnf = Brand.objects.get(name="TNF")
-        zara = Brand.objects.get(name="Zara")
+        brand1 = Brand.objects.get(name="Brand1")
+        brand2 = Brand.objects.get(name="Brand2")
+        brand3 = Brand.objects.get(name="Brand3")
 
-        brands = (puma, tnf)
+        brands = (brand1, brand2)
 
         for brand in brands:
-            self.assertEqual(brand.name.lower(), brand.slug)
+            self.assertEqual(brand.name.lower(), " ".join(brand.slug.split("-")))
 
-        self.assertNotEqual(zara.name.lower(), zara.slug)
-        self.assertEqual(zara.slug, "adidas")
+        self.assertNotEqual(brand3.name.lower(), brand3.slug)
+        self.assertEqual(brand3.slug, "not-brand3")
 
 
 class ClothesTestCase(TestCase):
     def setUp(self) -> None:
         brnd = Brand.objects.create(
-            name="Zara",
-            desc="Description of zara",
-            slug="adidas",
+            name="Brand1",
+            desc="Description of Brand1",
+            slug="brand1",
             image="None"
         )
         tp = TypeOfClothing.objects.create(
-            name="Outerwear",
-            desc="Description of outerwear",
-            slug="outerwear",
+            name="Type1",
+            desc="Description of Type1",
+            slug="type1",
             image="None"
         )
         Clothes.objects.create(
-            name="Jacket",
-            desc="Description of the jacket",
-            slug="jacket",
+            name="Clothes1",
+            desc="Description of the Clothes1",
+            slug="clothes1",
             image="None",
             brand=brnd,
             type=tp,
@@ -65,10 +65,10 @@ class ClothesTestCase(TestCase):
         )
 
     def test_clothes(self):
-        clothes = Clothes.objects.get(name="Jacket")
+        clothes = Clothes.objects.get(name="Clothes1")
 
         self.assertEqual(clothes.name.lower(), clothes.slug)
-        self.assertEqual(clothes.brand.name, "Zara")
-        self.assertEqual(clothes.type.name, "Outerwear")
+        self.assertEqual(clothes.brand.name, "Brand1")
+        self.assertEqual(clothes.type.name, "Type1")
         self.assertEqual(float(clothes.price), 190.00)
         self.assertEqual(clothes.color, "Black")
