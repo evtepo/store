@@ -2,73 +2,69 @@ from django.test import TestCase
 
 from .models import Brand, TypeOfClothing, Clothes
 
-# Create your tests here.
-class BrandTestCase(TestCase):
+
+class Mixin(TestCase):
     def setUp(self) -> None:
-        Brand.objects.create(
+        brand1 = Brand.objects.create(
             name="Brand1",
-            desc="Description of Brand1",
+            desc="Description Brand1",
             slug="brand1",
-            image="None"
+            image="imageUrl"
         )
-        Brand.objects.create(
-            name="Brand2",
-            desc="Description of Brand2",
-            slug="brand2",
-            image="None"
-        )
-        Brand.objects.create(
-            name="Brand3",
-            desc="Description of brand3",
-            slug="not-brand3",
-            image="None"
-        )
-
-    def test_brands_name_eq_slug(self):
-        brand1 = Brand.objects.get(name="Brand1")
-        brand2 = Brand.objects.get(name="Brand2")
-        brand3 = Brand.objects.get(name="Brand3")
-
-        brands = (brand1, brand2)
-
-        for brand in brands:
-            self.assertEqual(brand.name.lower(), " ".join(brand.slug.split("-")))
-
-        self.assertNotEqual(brand3.name.lower(), brand3.slug)
-        self.assertEqual(brand3.slug, "not-brand3")
-
-
-class ClothesTestCase(TestCase):
-    def setUp(self) -> None:
-        brnd = Brand.objects.create(
-            name="Brand1",
-            desc="Description of Brand1",
-            slug="brand1",
-            image="None"
-        )
-        tp = TypeOfClothing.objects.create(
+        type1 = TypeOfClothing.objects.create(
             name="Type1",
-            desc="Description of Type1",
+            desc="Description Type1",
             slug="type1",
-            image="None"
+            image="imageUrl"
         )
         Clothes.objects.create(
             name="Clothes1",
-            desc="Description of the Clothes1",
+            desc="Description Clothes1",
             slug="clothes1",
-            image="None",
-            brand=brnd,
-            type=tp,
+            image="imageUrl",
+            brand=brand1,
+            type=type1,
             fabric="Cotton",
             color="Black",
             price=190.00,
         )
 
-    def test_clothes(self):
-        clothes = Clothes.objects.get(name="Clothes1")
 
-        self.assertEqual(clothes.name.lower(), clothes.slug)
-        self.assertEqual(clothes.brand.name, "Brand1")
-        self.assertEqual(clothes.type.name, "Type1")
-        self.assertEqual(float(clothes.price), 190.00)
-        self.assertEqual(clothes.color, "Black")
+# Page testing
+class PageTestCase(Mixin):
+    def test_pages(self):
+        brand1 = self.brand1
+        type1 = TypeOfClothing.objects.get(name="Type1")
+        clothes1 = Clothes.objects.get(name="Clothes1")
+        print(brand1.name)
+
+        self.assertEqual(self.client.get("/").status_code, 200)
+        # self.assertEqual(self.client.get("/authentication/").status_code, 200)
+        # self.assertEqual(self.client.get("/logout").status_code, 301)
+        # self.assertEqual(self.client.get("/registration").status_code, 301)
+        # self.assertEqual(self.client.get("/clothes").status_code, 200)
+        # self.assertEqual(self.client.get("/clothes/<slug:clothes_slug>").status_code, 200)
+        # self.assertEqual(self.client.get("/brands/").status_code, 200)
+        # self.assertEqual(self.client.get(f"/brands/<slug:{brand1.slug}>/").status_code, 200)
+
+
+# Model testing.
+class ClothesTestCase(Mixin):
+    def test_items(self):
+        brand1 = Brand.objects.get(name="Brand1")
+        type1 = TypeOfClothing.objects.get(name="Type1")
+        clothes1 = Clothes.objects.get(name="Clothes1")
+
+        items = (brand1, type1, clothes1)
+
+        # Basic testing
+        for item in items:
+            self.assertEqual(item.name.lower(), " ".join(item.slug.split("-")))
+            self.assertIn("Description ", item.desc)
+
+        # Clothes testing
+        self.assertEqual(clothes1.brand.name, "Brand1")
+        self.assertEqual(clothes1.type.name, "Type1")
+        self.assertEqual(clothes1.fabric, "Cotton")
+        self.assertEqual(clothes1.color, "Black")
+        self.assertEqual(float(clothes1.price), 190.00)
